@@ -8,7 +8,7 @@ const companySchema = new Schema({
     }
   },{collection:"setting"});
 
-  const company = mongoose.model("company",companySchema)
+  const company = mongoose.model("Company",companySchema)
 
   module.exports = company
 
