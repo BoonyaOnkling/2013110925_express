@@ -1,6 +1,7 @@
 
 const Shop = require('../models/shop')
 const Menu = require('../models/menu');
+const { config } = require('dotenv');
 
 
 exports.index = async(req, res, next) => {
@@ -10,7 +11,7 @@ exports.index = async(req, res, next) => {
         return{
             id: shop._id,
             name: shop.name,
-            photo: 'http://localhost:3000/images' + shop.photo,
+            photo: config.DOMAIN + shop.photo,
             location: shop.location
         }
     })
