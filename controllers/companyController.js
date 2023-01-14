@@ -33,7 +33,10 @@ exports.destory = async(req, res, next) => {
         })
 
         if(company.deletedCount === 0){
-            throw new Error('ไม่สามารถลบได้ ไม่พบข้อมูลบริษัท')
+            const error = new Error("ไม่สามารถลบได้ ไม่พบข้อมูลบริษัท")
+            error.statusCode = 404
+            throw error;
+            //throw new Error('ไม่สามารถลบได้ ไม่พบข้อมูลบริษัท')
         } else{
             res.status(200).json({
                 Message: 'ลบข้อมูลเรียบร้อยแล้ว'
@@ -42,18 +45,22 @@ exports.destory = async(req, res, next) => {
         
 
         if(!company){
-            throw new Error('ไมพบผู้ใช้งาน')
+            const error = new Error("ไม่พบผู้ใช้งาน")
+            error.statusCode = 404
+            throw error;
+            //throw new Error('ไมพบผู้ใช้งาน')
         } else{
             res.status(200).json({
                 data: company,
             })
         }
     } catch (error){
-        res.status(400).json({
-            error:{
-                message:'เกิดข้อผิดพลาด: ' + error.message
-            }
-        })
+        next(error)
+        // res.status(400).json({
+        //     error:{
+        //         message:'เกิดข้อผิดพลาด: ' + error.message
+        //     }
+        // })
     }
 }
 
@@ -75,11 +82,12 @@ exports.update = async(req, res, next) => {
         })
 
     } catch(error){
-        res.status(400).json({
-            error:{
-                message:'เกิดข้อผิดพลาด: ' + error.message
-            }
-        })
+        next(error)
+        // res.status(400).json({
+        //     error:{
+        //         message:'เกิดข้อผิดพลาด: ' + error.message
+        //     }
+        // })
     }
 }
 

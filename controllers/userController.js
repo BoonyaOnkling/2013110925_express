@@ -15,16 +15,32 @@ exports.bio = (req, res, next) => {
   }
 
   exports.register = async(req,res,next) =>{
-    const {name, email, password} = req.body
+    try{
+      const {name, email, password} = req.body
+      const existemail = await User.findOne({email:email})
+      if (existemail){
+        const error = new Error("อีเมลนี้มผู้ใช้งานในระบบแล้ว")
+        error.statusCode = 400
+        throw error;
+      }
+      let user = new User();
+      user.name = name
+      user.email = email
+      user.password = await user.encryptPassword(password)
 
-    let user = new User();
-    user.name = name
-    user.email = email
-    user.password = await user.encryptPassword(password)
+      await user.save()
 
-    await user.save()
-
-    res.status(200).json({
-      message: "ลงทะเบียนเรียบร้อยแล้ว"
-    })
+      res.status(201).json({
+        message: "ลงทะเบียนเรียบร้อยแล้ว"
+      })
+    } catch (error) {
+      next(error)
+    }
   }
+
+  /* if(!errors.isEmpty()){
+        const error = new Error("กรอกข้อมูลไม่ถูกต้อง")
+        error.statusCode = 422
+        error.validation = errors.array()
+        throw error
+      }*/
