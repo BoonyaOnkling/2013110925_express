@@ -18,6 +18,11 @@ const UserSchema = new Schema({
         return hashpassword
     }
 
+    UserSchema.methods.checkPassword = async function(password){
+        const isValid = await bcrypt.compare(password,this.password)
+        return isValid
+    }
+
   const user = mongoose.model("User",UserSchema)
 
   module.exports = user
