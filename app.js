@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose')
 const config = require('./config/index')
+const passport = require('passport')
 
 const errorHandler = require('./middleware/errorHandler')
 
@@ -26,11 +27,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize())
+
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/company',companyRouter);
 app.use('/staff',staffRouter);
 app.use('/shop',shopRouter);
+
 
 app.use(errorHandler)
 
