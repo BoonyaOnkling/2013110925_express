@@ -99,7 +99,15 @@ exports.bio = (req, res, next) => {
     } catch (error) {
       next(error)
     }
-    
+  }
+
+  exports.profile = (req, res, next) => {
+    const {role,name,email} = req.user
+    res.status(200).json({
+      name : name,
+      email : email,
+      role : role,
+    })
   }
 
   /* if(!errors.isEmpty()){
